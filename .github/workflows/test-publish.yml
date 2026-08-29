@@ -1,0 +1,17 @@
+name: Prueba publicar Yala
+on:
+  workflow_dispatch: {}   # se corre a mano desde la pestaña Actions
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publicar imagen de prueba en Instagram
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          CAPTION: "Prueba automática de la máquina de Yala. (se puede borrar)"
+        run: |
+          IMG="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/test/slide-01.jpg"
+          echo "URL de imagen: $IMG"
+          python3 publish.py "$IMG"
