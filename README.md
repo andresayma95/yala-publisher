@@ -7,12 +7,17 @@ abierto a Meta (ni el contenedor de Claude ni el PC llegan a graph.instagram.com
 ## Piezas
 
 - **`cola.json`** — la cola de publicación. Una entrada por día: fecha, hora,
-  imágenes (rutas relativas al repo), caption+hashtags ya combinados, y
-  estado (`pendiente` → `publicado`). La arma `herramientas/preparar_cola.py`
-  desde las piezas terminadas en `piezas/`.
-- **`publish.py`** — habla con la API de Instagram. Publica una imagen o un
-  carrusel. Deriva el ID de la cuenta con `GET /me` usando el token — **nunca
-  hardcodear ese ID a mano**, un ID equivocado da "Object does not exist".
+  `tipo` (`carrusel` o `reel`), imágenes o video (rutas relativas al repo),
+  caption+hashtags ya combinados, y estado (`pendiente` → `publicado`). La
+  arma `herramientas/preparar_cola.py` desde las piezas terminadas en
+  `piezas/` — un carrusel necesita `caption.md` + `png/`, un reel necesita
+  `caption.md` + un `.mp4` en `video/`.
+- **`publish.py`** — habla con la API de Instagram. `publicar_post` publica
+  una imagen o un carrusel; `publicar_reel` publica un Reel (sondea
+  `status_code` hasta `FINISHED` antes de publicar, porque el video tarda en
+  procesarse). Deriva el ID de la cuenta con `GET /me` usando el token —
+  **nunca hardcodear ese ID a mano**, un ID equivocado da "Object does not
+  exist".
 - **`publicar_cola.py`** — corre dentro del workflow. Mira qué día es HOY en
   hora de Bogotá, busca la entrada `pendiente` de ese día en `cola.json`, la
   publica, y marca `publicado`.
@@ -58,3 +63,7 @@ Actions → "Publicar diario Yala" → Run workflow → poné la fecha de una en
 
 29-ago-2026: primera prueba real (una foto) confirmó que el camino funciona.
 30-ago-2026: se construyó la cola semanal + el cron diario.
+30-ago-2026: primer Reel real (`dom31-solo-tarjeta` — banco de videos + escenas
+tipográficas + voz ElevenLabs) sumado a la cola. Se agregó soporte de Reels a
+`publish.py`/`publicar_cola.py` (media_type REELS + espera de procesamiento),
+antes solo publicaba carruseles de imagen.
