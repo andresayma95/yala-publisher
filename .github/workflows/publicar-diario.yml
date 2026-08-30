@@ -1,0 +1,35 @@
+name: Publicar diario Yala
+
+on:
+  schedule:
+    # 00:00 UTC de mar-dom = 19:00 hora Bogotá (UTC-5) de lun-sáb.
+    # (lun-sáb 19:00 Bogotá cae, en UTC, al día siguiente a medianoche.)
+    - cron: '0 0 * * 0,2,3,4,5,6'
+  workflow_dispatch:
+    inputs:
+      fecha_forzada:
+        description: 'Forzar una fecha (YYYY-MM-DD) para probar, en vez de usar hoy'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publicar el post de hoy (si hay uno pendiente)
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          FECHA_FORZADA: ${{ inputs.fecha_forzada }}
+        run: python3 publicar_cola.py
+
+      - name: Commitear la cola actualizada
+        run: |
+          git config user.name "yala-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add cola.json
+          git diff --cached --quiet || git commit -m "cola: marcar publicado ($(date -u +%F))"
+          git push
