@@ -1,0 +1,38 @@
+name: Generar voz (ElevenLabs)
+
+on:
+  workflow_dispatch:
+    inputs:
+      archivo_texto:
+        description: 'Ruta al .txt con el guion, ya commiteado en el repo (ej: voz-pendiente/sab29.txt)'
+        required: true
+      voz:
+        description: 'Nombre de la voz en tu cuenta de ElevenLabs (búsqueda parcial)'
+        required: false
+        default: 'Cristian Sanchez'
+      salida:
+        description: 'Ruta de salida del mp3 (ej: voz-generada/sab29.mp3)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generar audio con ElevenLabs
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          python3 generar_voz_ci.py "${{ inputs.archivo_texto }}" "${{ inputs.voz }}" "${{ inputs.salida }}"
+
+      - name: Commitear el audio generado
+        run: |
+          git config user.name "yala-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "${{ inputs.salida }}"
+          git commit -m "voz: generar ${{ inputs.salida }}"
+          git push
