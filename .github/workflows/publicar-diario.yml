@@ -2,9 +2,9 @@ name: Publicar diario Yala
 
 on:
   schedule:
-    # 00:00 UTC de mar-dom = 19:00 hora Bogotá (UTC-5) de lun-sáb.
-    # (lun-sáb 19:00 Bogotá cae, en UTC, al día siguiente a medianoche.)
-    - cron: '0 0 * * 0,2,3,4,5,6'
+    # 00:00 UTC todos los días = 19:00 hora Bogotá (UTC-5) del día anterior.
+    # 7 días/semana (decisión de Andrés, 30-ago-2026 — ya no se salta domingo).
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       fecha_forzada:
