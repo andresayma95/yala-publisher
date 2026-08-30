@@ -1,1 +1,3 @@
 yala-publisher.zip
+__pycache__/
+*.pyc
