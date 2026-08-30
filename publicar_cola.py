@@ -11,7 +11,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from publish import publicar_post
+from publish import publicar_post, publicar_reel
 
 COLA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cola.json")
 
@@ -43,9 +43,14 @@ def main():
         print("Nada pendiente para hoy. No se publica nada.")
         return
 
-    urls = [raw_url(repo, ref, img) for img in objetivo["imagenes"]]
-    print(f"Publicando '{objetivo['slug']}' con {len(urls)} imagen(es)...")
-    media_id = publicar_post(urls, objetivo["caption"], token)
+    if objetivo.get("tipo") == "reel":
+        video_url = raw_url(repo, ref, objetivo["video"])
+        print(f"Publicando reel '{objetivo['slug']}' ({video_url})...")
+        media_id = publicar_reel(video_url, objetivo["caption"], token)
+    else:
+        urls = [raw_url(repo, ref, img) for img in objetivo["imagenes"]]
+        print(f"Publicando '{objetivo['slug']}' con {len(urls)} imagen(es)...")
+        media_id = publicar_post(urls, objetivo["caption"], token)
 
     objetivo["estado"] = "publicado"
     objetivo["media_id"] = media_id

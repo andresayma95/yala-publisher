@@ -68,6 +68,38 @@ def publicar_post(imgs, caption, token, igid=None):
     return pub.get("id")
 
 
+def publicar_reel(video_url, caption, token, igid=None, timeout_seg=180):
+    """Publica un Reel de video. A diferencia de una imagen, IG tarda en procesar
+    el video: hay que sondear /{creation_id}?fields=status_code hasta FINISHED
+    antes de poder publicar (ERROR ahí = video_url inaccesible o formato inválido)."""
+    if igid is None:
+        igid = obtener_ig_user_id(token)
+
+    cont = _call("POST", f"/{igid}/media",
+                 {"media_type": "REELS", "video_url": video_url,
+                  "caption": caption, "access_token": token})
+    creation_id = cont["id"]
+
+    esperado = 0
+    while esperado < timeout_seg:
+        time.sleep(5)
+        esperado += 5
+        estado = _call("GET", f"/{creation_id}?fields=status_code&access_token={token}")
+        code = estado.get("status_code")
+        print(f"  procesando video... status_code={code} ({esperado}s)")
+        if code == "FINISHED":
+            break
+        if code == "ERROR":
+            raise RuntimeError(f"IG no pudo procesar el video: {estado}")
+    else:
+        raise TimeoutError(f"El video no terminó de procesar en {timeout_seg}s.")
+
+    pub = _call("POST", f"/{igid}/media_publish",
+                {"creation_id": creation_id, "access_token": token})
+    print("PUBLICADO (reel). media_id:", pub.get("id"))
+    return pub.get("id")
+
+
 def main():
     imgs = sys.argv[1:]
     token = os.environ["IG_TOKEN"].strip()
