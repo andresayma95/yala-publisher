@@ -2,6 +2,16 @@
   "zona_horaria": "America/Bogota",
   "posts": [
     {
+      "fecha": "2026-08-30",
+      "hora": "19:00",
+      "slug": "lun21-quien-te-diga-cual",
+      "fecha_contenido": "2026-09-21",
+      "tipo": "reel",
+      "video": "semana/2026-09-21-lun21-quien-te-diga-cual/reel-lun21-FINAL.mp4",
+      "caption": "No te faltan planes. Te falta alguien que te diga cuál.\n\nYala ya está en línea. Entrá y decidí vos: yala.lat\n\n#planesmedellin #quehacerenmedellin #medellin #entretenimiento #yala #yalalatam",
+      "estado": "pendiente"
+    },
+    {
       "fecha": "2026-09-05",
       "hora": "19:00",
       "slug": "dom31-solo-tarjeta",
