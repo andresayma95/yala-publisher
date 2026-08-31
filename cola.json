@@ -14,6 +14,58 @@
       "publicado_en": "2026-08-30T20:26:47.967395-05:00"
     },
     {
+      "fecha": "2026-08-31",
+      "hora": "19:00",
+      "slug": "mar22-mejor-plan",
+      "fecha_contenido": "2026-09-22",
+      "tipo": "carrusel",
+      "imagenes": [
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-01.jpg",
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-02.jpg",
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-03.jpg",
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-04.jpg",
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-05.jpg",
+        "semana/2026-09-22-mar22-mejor-plan/carrusel-mar22-slide-06.jpg"
+      ],
+      "caption": "El que hace el mejor plan no siempre es el que mejor lo cuenta.\n\nHay lugares buenísimos que nunca te van a aparecer. No porque sean malos: porque su tiempo se les va en atender, no en aparecer.\n\nPor eso salimos a buscarlos, uno por uno.\n\n#planesmedellin #quehacerenmedellin #medellin #entretenimiento #negocioslocales #yala #yalalatam",
+      "estado": "pendiente"
+    },
+    {
+      "fecha": "2026-09-01",
+      "hora": "19:00",
+      "slug": "mie23-buscar-vs-decidir",
+      "fecha_contenido": "2026-09-23",
+      "tipo": "carrusel",
+      "imagenes": [
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-01.jpg",
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-02.jpg",
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-03.jpg",
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-04.jpg",
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-05.jpg",
+        "semana/2026-09-23-mie23-buscar-vs-decidir/carrusel-mie23-buscar-vs-decidir-slide-06.jpg"
+      ],
+      "caption": "Preguntaste en el grupo. Miraste historias. Buscaste en Google. Y seguís sin saber qué hacer.\n\nNo es que no sepas buscar. Es que buscar no es lo mismo que decidir.\n\nBuscar da opciones. Decidir necesita criterio.\n\n#planesmedellin #quehacerenmedellin #medellin #entretenimiento #yala #yalalatam",
+      "estado": "pendiente"
+    },
+    {
+      "fecha": "2026-09-02",
+      "hora": "19:00",
+      "slug": "dom27-noticias",
+      "fecha_contenido": "2026-09-27",
+      "tipo": "carrusel",
+      "imagenes": [
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-01.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-02.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-03.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-04.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-05.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-06.jpg",
+        "semana/2026-09-27-dom27-noticias/carrusel-dom27-slide-07.jpg"
+      ],
+      "caption": "5 cosas que pasaron en entretenimiento esta semana.\n\nMedellín, Colombia y la región, en un solo lado. El detalle completo está en yala.lat\n\n¿Cuál te vas a hacer?\n\n#planesmedellin #quehacerenmedellin #medellin #entretenimiento #conciertoscolombia #yala #yalalatam",
+      "estado": "pendiente"
+    },
+    {
       "fecha": "2026-09-05",
       "hora": "19:00",
       "slug": "dom31-solo-tarjeta",
