@@ -48,10 +48,17 @@ def main():
 
     req = urllib.request.Request(
         f"{API}/text-to-speech/{voice_id}",
+        # stability baja = más variación emocional (0.5 sonaba plano).
+        # style sube la expresividad. use_speaker_boost da más presencia.
         data=json.dumps({
             "text": texto,
             "model_id": "eleven_multilingual_v2",
-            "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+            "voice_settings": {
+                "stability": float(os.environ.get("VOZ_STABILITY", "0.32")),
+                "similarity_boost": 0.75,
+                "style": float(os.environ.get("VOZ_STYLE", "0.55")),
+                "use_speaker_boost": True,
+            },
         }).encode(),
         headers={
             "xi-api-key": key,
