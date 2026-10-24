@@ -13,11 +13,13 @@ jobs:
     steps:
       - name: 1 - Token valido (/me)
         run: |
+          IG_TOKEN=$(printf '%s' "$IG_TOKEN" | tr -d '[:space:]')
           code=$(curl -s -o me.json -w "%{http_code}" "https://graph.instagram.com/me?fields=user_id,username&access_token=$IG_TOKEN")
           echo "::notice::ME HTTP $code $(head -c 300 me.json)"
           test "$code" = "200"
       - name: 2 - Renovar (refresh) y comparar
         run: |
+          IG_TOKEN=$(printf '%s' "$IG_TOKEN" | tr -d '[:space:]'); export IG_TOKEN
           code=$(curl -s -o r.json -w "%{http_code}" "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_TOKEN")
           echo "::notice::REFRESH HTTP $code $(sed 's/"access_token":"[^"]*"/"access_token":"***"/' r.json | head -c 300)"
           python3 - <<'PY'
