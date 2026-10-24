@@ -24,11 +24,16 @@ jobs:
                   return e.code, json.loads(e.read().decode() or "{}")
           s, d = get("https://graph.instagram.com/me?fields=user_id,username&access_token=" + urllib.parse.quote(t))
           print("ME:", s, {k: v for k, v in d.items() if k != "access_token"})
+          if s != 200:
+              raise SystemExit("Token invalido o vencido: /me devolvio %s" % s)
           s, d = get("https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=" + urllib.parse.quote(t))
           nuevo = d.get("access_token", "")
           print("REFRESH:", s, "expires_in:", d.get("expires_in"), "error:", d.get("error"))
           if nuevo:
-              print("MISMO_TOKEN:", hashlib.sha256(nuevo.encode()).hexdigest() == hashlib.sha256(t.encode()).hexdigest())
+              igual = hashlib.sha256(nuevo.encode()).hexdigest() == hashlib.sha256(t.encode()).hexdigest()
+              print("MISMO_TOKEN:", igual)
+              if not igual:
+                  raise SystemExit("El refresh devolvio un token DISTINTO: hay que actualizar el secret IG_TOKEN")
           else:
               raise SystemExit("No se pudo renovar: revisar token")
           PY
