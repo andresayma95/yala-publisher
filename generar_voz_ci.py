@@ -50,19 +50,24 @@ def main():
         voice_id, nombre_real = resolver_voice_id(nombre_voz, key)
     print(f"Usando voz: {nombre_real} ({voice_id})")
 
+    ajustes = json.loads(os.environ.get("AJUSTES", "").strip() or "{}")
+    modelo = ajustes.pop("model_id", "eleven_multilingual_v2")
+    vs = {
+        "stability": float(os.environ.get("VOZ_STABILITY", "0.32")),
+        "similarity_boost": 0.75,
+        "style": float(os.environ.get("VOZ_STYLE", "0.55")),
+        "use_speaker_boost": True,
+    }
+    vs.update(ajustes)
+    print("AJUSTES:", modelo, vs)
     req = urllib.request.Request(
         f"{API}/text-to-speech/{voice_id}",
         # stability baja = más variación emocional (0.5 sonaba plano).
         # style sube la expresividad. use_speaker_boost da más presencia.
         data=json.dumps({
             "text": texto,
-            "model_id": "eleven_multilingual_v2",
-            "voice_settings": {
-                "stability": float(os.environ.get("VOZ_STABILITY", "0.32")),
-                "similarity_boost": 0.75,
-                "style": float(os.environ.get("VOZ_STYLE", "0.55")),
-                "use_speaker_boost": True,
-            },
+            "model_id": modelo,
+            "voice_settings": vs,
         }).encode(),
         headers={
             "xi-api-key": key,
