@@ -43,7 +43,11 @@ def main():
     if not texto:
         sys.exit(f"{archivo_texto} está vacío.")
 
-    voice_id, nombre_real = resolver_voice_id(nombre_voz, key)
+    nv = nombre_voz.strip()
+    if len(nv) == 20 and nv.isalnum():
+        voice_id, nombre_real = nv, "(ID directo)"
+    else:
+        voice_id, nombre_real = resolver_voice_id(nombre_voz, key)
     print(f"Usando voz: {nombre_real} ({voice_id})")
 
     req = urllib.request.Request(
@@ -71,7 +75,9 @@ def main():
         with urllib.request.urlopen(req) as r, open(archivo_salida, "wb") as f:
             f.write(r.read())
     except urllib.error.HTTPError as e:
-        sys.exit(f"ElevenLabs devolvió error: {e.read().decode()}")
+        cuerpo = e.read().decode()[:300]
+        print(f"::error::ElevenLabs HTTP {e.code}: {cuerpo}")
+        sys.exit(f"ElevenLabs devolvió error: {cuerpo}")
 
     print(f"OK -> {archivo_salida} ({os.path.getsize(archivo_salida)} bytes)")
 
