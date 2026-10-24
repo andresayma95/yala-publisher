@@ -1,0 +1,32 @@
+name: Listar voces ElevenLabs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Voces de la cuenta y plan
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          k = os.environ["ELEVENLABS_API_KEY"].strip()
+          def get(path):
+              req = urllib.request.Request("https://api.elevenlabs.io" + path, headers={"xi-api-key": k})
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return json.load(r)
+              except urllib.error.HTTPError as e:
+                  return {"error": e.code, "body": e.read().decode()[:200]}
+          sub = get("/v1/user/subscription")
+          print("::notice::PLAN", {x: sub.get(x) for x in ("tier", "status", "character_count", "character_limit", "error", "body")})
+          v = get("/v1/voices")
+          for x in v.get("voices", []):
+              l = x.get("labels") or {}
+              print("::notice::VOZ", x.get("name"), "|", x.get("category"), "|", l.get("accent"), l.get("gender"), l.get("language"))
+          if "error" in v:
+              print("::error::", v)
+          PY
