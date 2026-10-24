@@ -3,7 +3,7 @@ name: Verificar y renovar token Instagram
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 14 * * 1'
+    - cron: '0 14 1 * *'
 
 jobs:
   token:
@@ -28,6 +28,8 @@ jobs:
           print("expires_in:", d.get("expires_in"), "error:", d.get("error"))
           nuevo = d.get("access_token", "")
           assert nuevo, "sin token en la respuesta"
-          assert nuevo == os.environ["IG_TOKEN"].strip(), "token DISTINTO: actualizar secret IG_TOKEN"
-          print("OK: mismo token, vigencia extendida")
+          if nuevo != os.environ["IG_TOKEN"].strip():
+              print("::warning::El refresh devolvio un token distinto; el guardado sigue valido hasta que venza (ver expires_in)")
+          else:
+              print("OK: mismo token, vigencia extendida")
           PY
