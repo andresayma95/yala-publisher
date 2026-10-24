@@ -2,9 +2,9 @@ name: Publicar diario Yala
 
 on:
   schedule:
-    # 00:00 UTC todos los días = 19:00 hora Bogotá (UTC-5) del día anterior.
+    # 22:00 UTC = 17:00 Bogotá. GitHub retrasa los cron ~2-3 h, así que sale ~19-20h Bogotá.
     # 7 días/semana (decisión de Andrés, 30-ago-2026 — ya no se salta domingo).
-    - cron: '0 0 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
     inputs:
       fecha_forzada:

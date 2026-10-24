@@ -1,0 +1,34 @@
+name: Verificar y renovar token Instagram
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * 1'   # lunes 9am Bogotá: renueva cada semana, el token dura 60 días
+
+jobs:
+  token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar (/me) y renovar (refresh_access_token)
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import os, json, hashlib, urllib.request, urllib.parse, urllib.error
+          t = os.environ["IG_TOKEN"].strip()
+          def get(url):
+              try:
+                  with urllib.request.urlopen(url, timeout=30) as r:
+                      return r.status, json.load(r)
+              except urllib.error.HTTPError as e:
+                  return e.code, json.loads(e.read().decode() or "{}")
+          s, d = get("https://graph.instagram.com/me?fields=user_id,username&access_token=" + urllib.parse.quote(t))
+          print("ME:", s, {k: v for k, v in d.items() if k != "access_token"})
+          s, d = get("https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=" + urllib.parse.quote(t))
+          nuevo = d.get("access_token", "")
+          print("REFRESH:", s, "expires_in:", d.get("expires_in"), "error:", d.get("error"))
+          if nuevo:
+              print("MISMO_TOKEN:", hashlib.sha256(nuevo.encode()).hexdigest() == hashlib.sha256(t.encode()).hexdigest())
+          else:
+              raise SystemExit("No se pudo renovar: revisar token")
+          PY
